@@ -27,17 +27,10 @@ Verify detection through audit logs
 
 🧱 Architecture Overview
 
-Internet
-   ↓
-Internet Gateway
-   ↓
-Public Subnet (Internet-facing tier)
-   ↓
-Private Subnet (Secure backend tier)
-   ↓
-Encrypted S3 Storage
-   ↓
-CloudTrail Logs (Monitoring & Audit)
+Internet → Internet Gateway → Public Subnet (Web Tier)
+         → Private Subnet (Secure Backend Tier)
+         → Encrypted S3 Storage
+         → CloudTrail Logs (Monitoring & Audit)
 
 
 ⚙️ Implementation Details
@@ -51,7 +44,8 @@ CIDR Block: 10.0.0.0/16
 
 Tenancy: Default
 
-📸 Screenshot: VPC details showing CIDR block
+VPC details showing CIDR block
+![Screenshot1](https://github.com/user-attachments/assets/5fe0abc5-d0c0-4081-b8de-c6f2490faa7b)
 
 2. Subnet Configuration
 
@@ -73,7 +67,8 @@ No direct internet route
 
 Intended for sensitive backend resources
 
-📸 Screenshot: Subnets list showing both subnets
+Subnets list showing both subnets
+![Screenshot2](https://github.com/user-attachments/assets/274a765c-2c56-44d2-aeee-6f3b0d18cb5b)
 
 3. Internet Gateway & Routing
 
@@ -91,7 +86,8 @@ No internet route configured
 
 Associated with Private Subnet
 
-📸 Screenshot: Public Route Table showing IGW route
+Public Route Table showing IGW route
+![Screenshot3](https://github.com/user-attachments/assets/d986020d-9266-411a-97c6-b8acf8b89451)
 
 4. Secure S3 Storage
 
@@ -105,7 +101,8 @@ Server-side encryption using SSE-S3
 
 Access restricted via IAM policies only
 
-📸 Screenshot: Bucket permissions page showing public access blocked
+Bucket permissions page showing public access blocked
+![Screenshot4](https://github.com/user-attachments/assets/00afa532-9246-4c78-8b0b-6ab2da8997ed)
 
 5. IAM Least Privilege Policy
 
@@ -117,7 +114,8 @@ s3:PutObject
 
 This policy demonstrates controlled access according to the Principle of Least Privilege.
 
-📸 Screenshot: IAM policy JSON or permission summary
+IAM policy JSON or permission summary
+![Screenshot5](https://github.com/user-attachments/assets/1ace8bcd-d468-4d05-84bb-40592106af66)
 
 6. CloudTrail Monitoring Setup
 
@@ -133,7 +131,8 @@ Logs stored in a dedicated S3 bucket
 
 Log file validation enabled
 
-📸 Screenshot: CloudTrail trail overview page
+CloudTrail trail overview page
+![Screenshot6](https://github.com/user-attachments/assets/ddf70ac8-5ba3-439b-983c-1b60f85ada63)
 
 🚨 Security Incident Simulation
 
@@ -155,7 +154,8 @@ Bucket listing blocked by IAM
 
 Sensitive storage remained protected
 
-📸 Screenshot: Access Denied message from attacker account (S3 page)
+Access Denied message from attacker account (S3 page)
+![Screenshot](https://github.com/user-attachments/assets/7aa68d73-6b7c-4665-86f4-da98d1391cc6)
 
 Attack Scenario 2 — Unauthorized EC2 Access
 
@@ -171,7 +171,8 @@ EC2 resources remained inaccessible
 
 No infrastructure exposure occurred
 
-📸 Screenshot: Access Denied message from EC2 console
+Access Denied message from EC2 console
+![Screenshot](https://github.com/user-attachments/assets/399b899a-9eed-4742-9be0-93390a409355)
 
 🔍 Log Verification Using CloudTrail
 
@@ -189,7 +190,10 @@ Identity of the caller (attacker-user)
 
 Error code: AccessDenied
 
-📸 Screenshot: CloudTrail event history showing denied events
+CloudTrail event history showing denied events
+![Screenshot](https://github.com/user-attachments/assets/e32d5700-e97d-4083-a411-7cf64761efcc)
+
+![Screenshot](https://github.com/user-attachments/assets/9477aa96-820e-4ec3-b942-248bbd65fccc)
 
 🛡️ Security Controls Implemented
 
@@ -254,4 +258,4 @@ Such architectures form the foundation of enterprise-grade cloud security deploy
 👨‍💻 Author
 
 Aman Lodha
-Secure AWS Multi-Tier Architecture & Threat Monitoring Project
+Cloud Security

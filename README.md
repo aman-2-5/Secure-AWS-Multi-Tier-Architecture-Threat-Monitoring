@@ -1,70 +1,32 @@
 🔐 Secure AWS Multi-Tier Architecture & Threat Monitoring
+📌 Project Overview
 
-An industry-style secure cloud architecture built on Amazon Web Services (AWS) demonstrating network isolation, secure storage, least-privilege access control, and activity monitoring.
-The project simulates unauthorized access attempts and verifies detection using audit logs.
+This project demonstrates the design and implementation of a secure multi-tier cloud architecture on Amazon Web Services (AWS) with integrated monitoring capabilities to detect unauthorized access attempts.
 
-🚀 Key Features
-🌐 Network Isolation (VPC)
+The architecture applies defense-in-depth principles by combining network isolation, secure storage, identity-based access control, and centralized audit logging.
 
-Custom Virtual Private Cloud (VPC)
+Two simulated attack scenarios were performed using an unprivileged IAM user to validate the effectiveness of the implemented security controls.
 
-Public and Private subnet architecture
+🎯 Objectives
 
-Controlled internet exposure
+Design an isolated virtual network using AWS VPC
 
-Segmented network design to reduce attack surface
+Implement public and private subnets
 
-🔒 Secure Storage
+Control internet exposure using routing mechanisms
 
-Encrypted Amazon S3 bucket
+Secure storage using encryption and access restrictions
 
-Block all public access enabled
+Apply the Principle of Least Privilege using IAM
 
-Access restricted via IAM policies
+Enable activity monitoring using AWS CloudTrail
 
-Protection against data exposure
+Simulate unauthorized access attempts
 
-👤 Identity & Access Management
+Verify detection through audit logs
 
-Custom least-privilege IAM policy
+🧱 Architecture Overview
 
-Role-based access control
-
-Unauthorized users denied by default
-
-📜 Audit Logging & Monitoring
-
-AWS CloudTrail enabled for API activity tracking
-
-Read and Write management events captured
-
-Dedicated log storage bucket
-
-Log file integrity validation enabled
-
-🚨 Intrusion Simulation
-
-Creation of unprivileged attacker IAM user
-
-Unauthorized access attempts to resources
-
-Security controls validated through denial of access
-
-Activity recorded for forensic analysis
-
-🧠 Technology Stack
-
-Cloud Platform: Amazon Web Services (AWS)
-
-Networking: VPC, Subnets, Route Tables, Internet Gateway
-
-Storage: Amazon S3
-
-Security: IAM, Encryption (SSE-S3)
-
-Monitoring: AWS CloudTrail
-
-🏗️ Architecture Overview
 Internet
    ↓
 Internet Gateway
@@ -76,16 +38,25 @@ Private Subnet (Secure backend tier)
 Encrypted S3 Storage
    ↓
 CloudTrail Logs (Monitoring & Audit)
-⚙️ Implementation Steps
-🧱 VPC Creation
 
-Created custom VPC with CIDR block 10.0.0.0/16
 
-Isolated environment from default AWS network
+⚙️ Implementation Details
+1. Virtual Private Cloud (VPC)
 
-📸 Screenshot: VPC details page showing CIDR block
+A custom VPC was created to isolate resources from the default AWS network.
 
-🌐 Subnet Configuration
+Configuration:
+
+CIDR Block: 10.0.0.0/16
+
+Tenancy: Default
+
+📸 Screenshot: VPC details showing CIDR block
+
+2. Subnet Configuration
+
+Two subnets were deployed within the VPC to separate public and secure resources.
+
 Public Subnet
 
 CIDR: 10.0.1.0/24
@@ -100,11 +71,14 @@ CIDR: 10.0.2.0/24
 
 No direct internet route
 
-Intended for secure backend resources
+Intended for sensitive backend resources
 
 📸 Screenshot: Subnets list showing both subnets
 
-🌍 Internet Gateway & Routing
+3. Internet Gateway & Routing
+
+An Internet Gateway (IGW) was attached to provide external connectivity to the VPC.
+
 Public Route Table
 
 Route: 0.0.0.0/0 → Internet Gateway
@@ -119,39 +93,43 @@ Associated with Private Subnet
 
 📸 Screenshot: Public Route Table showing IGW route
 
-🔐 Secure S3 Storage
+4. Secure S3 Storage
 
-Security measures implemented:
+An Amazon S3 bucket was configured for secure data storage.
+
+Security Measures Implemented:
 
 Block all public access enabled
 
-Server-side encryption (SSE-S3)
+Server-side encryption using SSE-S3
 
-Access restricted through IAM only
+Access restricted via IAM policies only
 
 📸 Screenshot: Bucket permissions page showing public access blocked
 
-👤 IAM Least Privilege Policy
+5. IAM Least Privilege Policy
 
-Custom IAM policy created allowing only:
+A custom IAM policy was created granting minimal permissions:
 
 s3:GetObject
 
 s3:PutObject
 
-Demonstrates strict access control.
+This policy demonstrates controlled access according to the Principle of Least Privilege.
 
-📸 Screenshot: IAM policy JSON or permissions summary
+📸 Screenshot: IAM policy JSON or permission summary
 
-📜 CloudTrail Monitoring Setup
+6. CloudTrail Monitoring Setup
 
-CloudTrail configured to record all management API activity.
+AWS CloudTrail was enabled to capture all management API activity.
+
+Configuration:
 
 Management events enabled
 
 Read and Write events enabled
 
-Logs stored in dedicated S3 bucket
+Logs stored in a dedicated S3 bucket
 
 Log file validation enabled
 
@@ -159,45 +137,47 @@ Log file validation enabled
 
 🚨 Security Incident Simulation
 
-An unprivileged IAM user named attacker-user was created with zero permissions to simulate malicious activity.
+To validate the effectiveness of the implemented security controls, an unprivileged IAM user named attacker-user was created with zero permissions.
 
-🔴 Attack Scenario 1 — Unauthorized S3 Access
+Two unauthorized access attempts were performed.
+
+Attack Scenario 1 — Unauthorized S3 Access
 
 Action Attempted:
 
-Attempt to view and enumerate S3 buckets
+The attacker attempted to access and enumerate S3 buckets.
 
 Result:
 
-Access denied by IAM policies
+Access denied due to lack of permissions
 
-Bucket listing blocked
+Bucket listing blocked by IAM
 
-Data remained protected
+Sensitive storage remained protected
 
-📸 Screenshot: Access Denied message from S3 console
+📸 Screenshot: Access Denied message from attacker account (S3 page)
 
-🔴 Attack Scenario 2 — Unauthorized EC2 Access
+Attack Scenario 2 — Unauthorized EC2 Access
 
 Action Attempted:
 
-Attempt to view EC2 instances and infrastructure
+The attacker attempted to view EC2 instances and resources.
 
 Result:
 
 Access denied by IAM
 
-Compute resources inaccessible
+EC2 resources remained inaccessible
 
-Infrastructure remained secure
+No infrastructure exposure occurred
 
 📸 Screenshot: Access Denied message from EC2 console
 
 🔍 Log Verification Using CloudTrail
 
-CloudTrail logs confirmed both unauthorized attempts.
+CloudTrail logs confirmed both unauthorized access attempts.
 
-Captured forensic details include:
+The logs captured detailed forensic information, including:
 
 Event name (e.g., ListBuckets, DescribeInstances)
 
@@ -205,7 +185,7 @@ Timestamp of activity
 
 Source IP address
 
-Caller identity (attacker-user)
+Identity of the caller (attacker-user)
 
 Error code: AccessDenied
 
@@ -215,21 +195,21 @@ Error code: AccessDenied
 
 Network segmentation using VPC
 
-Controlled internet exposure
+Controlled internet exposure via routing
 
 Encryption of stored data
 
-Identity-based access control
+Identity-based access control (IAM)
 
 Principle of Least Privilege enforcement
 
 Comprehensive audit logging
 
-Unauthorized activity detection
+Detection of unauthorized activities
 
 ✅ Results
 
-The architecture successfully prevented unauthorized access to both storage and compute resources.
+The architecture successfully prevented unauthorized access attempts to both storage and compute resources.
 
 All malicious actions performed by the unprivileged user were:
 
@@ -237,40 +217,41 @@ Blocked by IAM policies
 
 Logged by CloudTrail
 
-Traceable for forensic investigation
+Traceable for forensic analysis
 
-🧪 Use Cases
+🏆 Key Learnings
 
-Cloud security demonstrations
+Importance of network isolation in cloud security
 
-Network architecture studies
+Effective use of IAM for access control
 
-IAM policy testing
+Role of audit logs in incident response
 
-Incident response practice
+Defense-in-depth architecture principles
 
-Educational projects
-
-Cybersecurity portfolio project
+Real-world simulation of unauthorized access scenarios
 
 🔮 Possible Enhancements
 
-NAT Gateway for private subnet internet access
+Future improvements could include:
 
-AWS GuardDuty for advanced threat detection
+NAT Gateway for controlled private subnet internet access
+
+AWS GuardDuty for advanced threat intelligence
 
 AWS WAF for web application protection
 
 Security Groups and Network ACL hardening
 
-SIEM integration for centralized monitoring
+Integration with SIEM tools for centralized monitoring
 
-⚠️ Disclaimer
+📌 Conclusion
 
-This project is intended for educational and authorized testing purposes only.
-All activities were performed within a controlled AWS environment owned by the project author.
+This project demonstrates how a secure multi-tier architecture can be implemented in AWS using core security services. By combining network isolation, strict IAM policies, encrypted storage, and activity monitoring, the system effectively prevents and detects unauthorized access attempts.
+
+Such architectures form the foundation of enterprise-grade cloud security deployments.
 
 👨‍💻 Author
 
-AMAN LODHA
-Cloud Security 
+Aman Lodha
+Secure AWS Multi-Tier Architecture & Threat Monitoring Project
